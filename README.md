@@ -3,7 +3,7 @@
 
 # Container Desktop
 
-Container Desktop is an open-source alternative to Docker Desktop. It enables you to build, push, pull and run Linux containers on Microsoft Windows, by providing a seamless integration with Docker Engine Community Edition running om Windows Subsystem for Linux. The Container Desktop bundles the open-source docker and docker-compose cli clients for a native and simple user experience.
+Container Desktop is an open-source alternative to Docker Desktop. It enables you to build, push, pull and run Linux containers on Microsoft Windows, by providing a seamless integration with Docker Engine Community Edition running on Windows Subsystem for Linux. The Container Desktop bundles the open-source docker and docker-compose cli clients for a native and simple user experience.
 ## How it works?
 
 ![](docs/static/img/container-desktop-overview.png)
@@ -17,14 +17,13 @@ Container Desktop installs the docker and the docker-compose command line interf
 
 ## Supported features
 
-The solution is in its early days and supports the following features:
-
 * Run Docker daemon in its own distribution
-* Use 'docker' and 'docker-compose' cli on Windows to connect to the daemon
+* Use 'docker' and 'docker-compose' cli on Windows and enabled WSL2 Distributions to connect to the daemon. 
 * You can use Windows paths as volumes, the container-desktop-proxy translates these paths to WSL2 paths local to the daemon distribution
 * Start/stop/restart and quit Container Desktop by right clicking on the icon in the system tray.
 * Enable container-desktop integration in installed WSL2 distributions.
-
+* Use Port Forwarding to expose containers on a specific network. 
+* Configure DNS Mode for Container Desktop (WLS2/Primary Network Adapter/Static).
 ## Installation
 
 **System requirements**
@@ -38,11 +37,12 @@ Container Desktop requires WLS2 which is supported on these Windows versions:
 
 **Installation Steps**
 
-1. Download the latest [Release](https://github.com/container-desktop/container-desktop/releases)
-2. (optional) Validate the file checksum  with the values in sha256sum.txt
+1. If you currently have docker-desktop installed, you need to **quit** *"Docker Desktop"*.
+2. Download the latest [Release](https://github.com/container-desktop/container-desktop/releases)
+3. (optional) Validate the file checksum  with the values in sha256sum.txt
 
     ```powershell
-    Get-FileHash .\ContainerDesktopInstaller.exe -Algorithm SHA256'
+    Get-FileHash .\ContainerDesktopInstaller.exe -Algorithm SHA256
     ```
 
 3. StartContainerDesktopInstaller.exe and click install to start the installation.

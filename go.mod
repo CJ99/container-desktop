@@ -24,4 +24,13 @@ require (
 require (
 	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
+	golang.org/x/net v0.0.0-20211123203042-d83791d6bcd9
 )
+
+require (
+	github.com/ishidawataru/sctp v0.0.0-20210707070123-9a39160e9062
+	golang.org/x/text v0.3.6 // indirect
+	gotest.tools/v3 v3.0.3
+)
+
+require github.com/pkg/errors v0.9.1 // indirect

@@ -1,11 +1,11 @@
 ﻿using ContainerDesktop.Common;
+using ContainerDesktop.Pages;
 using ContainerDesktop.Services;
 using ContainerDesktop.ViewModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using System.IO.Abstractions;
 
 namespace ContainerDesktop;
 
@@ -30,7 +30,7 @@ static class Program
             {
                 builder
                     .AddJsonFile("appsettings.json", true)
-                    .AddUserSecrets<App>()
+                    .AddUserSecrets<App>(true)
                     .AddEnvironmentVariables("CONTAINERDESKTOP_");
             })
             .ConfigureServices(ConfigureServices)
@@ -40,6 +40,13 @@ static class Program
                 var productInfo = sp.GetRequiredService<IProductInformation>();
                 config.WriteTo.File(Path.Combine(productInfo.ContainerDesktopAppDataDir, "logs", "log.txt"), fileSizeLimitBytes: 1024 * 1024 * 10, rollOnFileSizeLimit: true);
                 config.WriteTo.Conditional(e => e.Level <= Serilog.Events.LogEventLevel.Warning, x => x.EventLog(productInfo.DisplayName));
+                config.WriteTo.Observers(observable =>
+                {
+                    foreach(var logObserver in sp.GetServices<ILogObserver>())
+                    {
+                        logObserver.SubscribeTo(observable);
+                    }
+                });
             });
 
     static void ConfigureServices(IServiceCollection services)
@@ -53,5 +60,10 @@ static class Program
         services.AddProcessExecutor();
         services.AddSingleton<IContainerEngine, DefaultContainerEngine>();
         services.AddSingleton<IConfigurationService, ConfigurationService>();
+        services.AddSingleton<MainPage>();
+        services.AddSingleton<SettingsPage>();
+        services.AddSingleton<SettingsViewModel>();
+        services.AddSingleton<LogsPage>();
+        services.AddSingleton<ILogObserver>(sp => sp.GetService<LogsPage>());
     }
 }
